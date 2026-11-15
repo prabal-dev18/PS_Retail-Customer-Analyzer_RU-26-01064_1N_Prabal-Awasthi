@@ -7,35 +7,43 @@ except FileNotFoundError:
     exit()
 
 print("\n===== RETAIL CUSTOMER ANALYZER =====")
-
 print("\n1. Spending Statistics")
+print("2. High-Value Customers")
+print("3. City-wise Spending Summary")
 
-print("Mean Spending:", df["TotalSpent"].mean())
-print("Median Spending:", df["TotalSpent"].median())
-print("Highest Spending:", df["TotalSpent"].max())
-print("Lowest Spending:", df["TotalSpent"].min())
+choice = input("Enter your choice: ")
 
-highest = df.loc[df["TotalSpent"].idxmax()]
-lowest = df.loc[df["TotalSpent"].idxmin()]
+if choice == "1":
 
-print("\nHighest Spending Customer:", highest["Name"])
-print("Lowest Spending Customer:", lowest["Name"])
-print("\n2. High-Value Customers")
+    print("\nMean Spending:", df["TotalSpent"].mean())
+    print("Median Spending:", df["TotalSpent"].median())
 
-try:
-    limit = float(input("Enter minimum spending amount: "))
+    highest = df.loc[df["TotalSpent"].idxmax()]
+    lowest = df.loc[df["TotalSpent"].idxmin()]
 
-    if limit < 0:
-        print("Error: Amount cannot be negative.")
-    else:
-        high_value = df[df["TotalSpent"] >= limit]
-        print("\nHigh-Value Customers:")
-        print(high_value)
+    print("Highest Spending Customer:", highest["Name"])
+    print("Lowest Spending Customer:", lowest["Name"])
 
-except ValueError:
-    print("Error: Please enter a valid number.")
-print("\n3. City-wise Spending Summary")
+elif choice == "2":
 
-city_summary = df.groupby("City")["TotalSpent"].agg(["sum", "mean"])
+    try:
+        limit = float(input("Enter minimum spending amount: "))
 
-print(city_summary)
+        if limit < 0:
+            print("Error: Amount cannot be negative.")
+        else:
+            high_value = df[df["TotalSpent"] >= limit]
+            print("\nHigh-Value Customers:")
+            print(high_value)
+
+    except ValueError:
+        print("Error: Please enter a valid number.")
+
+elif choice == "3":
+
+    city_summary = df.groupby("City")["TotalSpent"].agg(["sum", "mean"])
+    print("\nCity-wise Spending Summary:")
+    print(city_summary)
+
+else:
+    print("Invalid choice.")
